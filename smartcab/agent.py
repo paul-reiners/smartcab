@@ -1,20 +1,21 @@
 import random
-from environment import Agent, Environment, TrafficLight
+from environment import Agent, Environment
 from planner import RoutePlanner
 from simulator import Simulator
+import sys
 
 class LearningAgent(Agent):
     """An agent that learns to drive in the smartcab world."""
 
-    def __init__(self, env):
+    def __init__(self, env, gamma, alpha):
         super(LearningAgent, self).__init__(env)  # sets self.env = env, state = None, next_waypoint = None, and a default color
         self.color = 'red'  # override color
         self.planner = RoutePlanner(self.env, self)  # simple route planner to get next_waypoint
         # TODO: Initialize any additional variables here
         self.q = {}
         valid_actions = Environment.valid_actions + [None]
-        self.gamma = 0.9
-        self.alpha = 0.2
+        self.gamma = gamma
+        self.alpha = alpha
         for left in valid_actions:
             for right in valid_actions:
                 for oncoming in valid_actions:
@@ -78,18 +79,20 @@ class LearningAgent(Agent):
         self.prev_reward = reward
 
 
-def run():
+def run(gamma, alpha):
     """Run the agent for a finite number of trials."""
 
     # Set up environment and agent
     e = Environment()  # create environment (also adds some dummy traffic)
-    a = e.create_agent(LearningAgent)  # create agent
+    a = e.create_agent(LearningAgent, gamma=gamma, alpha=alpha)  # create agent
     e.set_primary_agent(a, enforce_deadline=True)  # set agent to track
 
     # Now simulate it
-    sim = Simulator(e, update_delay=1.0)  # reduce update_delay to speed up simulation
+    sim = Simulator(e, update_delay=0.1)  # reduce update_delay to speed up simulation
     sim.run(n_trials=100)  # press Esc or close pygame window to quit
 
 
 if __name__ == '__main__':
-    run()
+    gamma = float(sys.argv[1])
+    alpha = float(sys.argv[2])
+    run(gamma=gamma, alpha=alpha)

@@ -1,0 +1,5 @@
+gamma,alpha,successes,failures,consecutive final successes
+ 0.85,  0.2,       xx,      xx,                          x
+ 0.90,  0.2,       32,      70,                          0
+ 0.95,  0.2,       42,      58,                          0
+ 
