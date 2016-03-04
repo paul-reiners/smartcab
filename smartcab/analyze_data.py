@@ -101,7 +101,7 @@ def get_int_from_line(name, line):
   
     
 def get_float_from_line(name, line):
-    val_str = get_num_str_from_line(name, line, "[0-9]*\.?[0-9]+")
+    val_str = get_num_str_from_line(name, line, "[-+]?[0-9]*\.?[0-9]+")
     val = float(val_str)
     
     return val

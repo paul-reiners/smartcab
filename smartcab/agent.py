@@ -25,15 +25,11 @@ class LearningAgent(Agent):
                             self.q[state] = {}
                             for action in valid_actions:
                                 self.q[state][action] = 0.0
-            
+        self.t = 1    
         self.initialize()
         
     def initialize(self):
         self.state = None
-        self.prev_state = None
-        self.prev_action = None
-        self.prev_reward = None
-        self.first_iteration = True
         self.total_reward = 0
 
     def reset(self, destination=None):
@@ -70,13 +66,11 @@ class LearningAgent(Agent):
         s_prime = (inputs['left'], inputs['right'], inputs['oncoming'], inputs['light'], next_waypoint)
         utility_of_next_state = self.get_utility_of_next_state(s_prime)
         utility_of_state = r + self.gamma * utility_of_next_state
-        self.q[s][a] = modify_by_alpha(self.alpha, self.q[s][a], utility_of_state)
+        self.q[s][a] = modify_by_alpha(self.alpha / self.t, self.q[s][a], utility_of_state)
+        self.t += 1
         
         self.total_reward += reward
         print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}, total_reward = {}".format(deadline, inputs, best_action, reward, self.total_reward)  # [debug]
-        self.prev_state = self.state
-        self.prev_action = best_action
-        self.prev_reward = reward
 
 
     def get_utility_of_next_state(self, s_prime):
@@ -101,7 +95,7 @@ def run(gamma, alpha):
     e.set_primary_agent(a, enforce_deadline=True)  # set agent to track
 
     # Now simulate it
-    sim = Simulator(e, update_delay=0.1)  # reduce update_delay to speed up simulation
+    sim = Simulator(e, update_delay=0.01)  # reduce update_delay to speed up simulation
     sim.run(n_trials=100)  # press Esc or close pygame window to quit
 
 
