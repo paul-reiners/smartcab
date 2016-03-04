@@ -13,7 +13,7 @@ def analyze_data(input_file_name, output_file_name):
     successes = 0
     failures = 0
     output_file = open(output_file_name,'w')
-    output_file.write('trial,succeeded,deadline\n') 
+    output_file.write('trial,succeeded,deadline,last_step_deadline\n') 
     with open(input_file_name) as input_file:
         lines = input_file.readlines()
         trial_start_lines = []
@@ -44,10 +44,17 @@ def analyze_data(input_file_name, output_file_name):
                     if succeeded:
                         successes += 1
                         succeeded_str = '1' 
+                        current_line_num += 1
+                        line = lines[current_line_num]
+                        last_step_deadline = get_int_from_line('deadline', line)
                     else:
                         failures += 1
                         succeeded_str = '0' 
-                    output_file.write(str(trial) + ',' + succeeded_str + ',' + str(deadline) + '\n')
+                        last_step_deadline = 0
+                    output_line = \
+                        str(trial) + ',' + succeeded_str + ',' + str(deadline) \
+                        + ',' + str(last_step_deadline) + '\n'
+                    output_file.write(output_line)
                     done = True
                     trial += 1
                 else:
