@@ -2,26 +2,27 @@
 
 ## Implement a basic driving agent
 
-We first produce some random move/action `(None, 'forward', 'left', 'right')`.
-Then we run this agent within the simulation environment with `enforce_deadline` set to `False`.
+Our first policy was to choose a random move/action from `(None, 'forward', 'left', 'right')`.
+Then we ran this agent within the simulation environment with `enforce_deadline` set to `False`.
 
 *In your report, mention what you see in the agent’s behavior. Does it eventually make it to the target location?*
 
 The agent moves randomly.  If I waited long enough, it would probably eventually make it to the target location, but
-I've never seen it do so.
+I never saw it do so.
 
 ## Identify and update state
 
 *Justify why you picked these set of states, and how they model the agent and its environment.*
 
-I picked the following states:
+I first picked the following states:
 
 * left
 * right
 * oncoming
 * light
 
-These four states seem like a good start.  I might add later the agent's current location.
+These four states seemed like a good start as they give enough information that the smart cab
+can go through intersections without breaking any traffic laws.  
 
 ## Implement Q-Learning
 
@@ -31,7 +32,7 @@ one more item to the agent's state:
 
 * next_waypoint
 
-My agent seemed a bit more purposeful at this point.  It did reach the goal several times (with `enforce_deadline` still set to `False`) as I watched it.
+Adding this state allows the smart cab to make progress towards the goal.  My agent seemed a bit more purposeful at this point.  It did reach the goal several times (with `enforce_deadline` still set to `False`) as I watched it.
 
 At this point, I decided to start recording the exact results.  I now had the following settings:
 
@@ -111,11 +112,16 @@ the results in this [spreadsheet](../data/performance.csv).
 
 With gamma set to 0.900, I achieved a success rate of 84%.
 
+Incidentally, at this point I needed to create some automation to summarize my results.  With 100 trials,
+I could no longer count the success rate manually all the time.  My automation is in 
+[analyze_data.py](../smartcab/analyze_data.py).  It simply parses the output, which I would redirect to a file,
+and then creates a [spreadsheet](../data/result.csv).
+
 *Does your agent get close to finding an optimal policy, i.e. reach the destination in the minimum possible time, and not incur any penalties?*
 
 I measured how close I was to finding an optimal policy by dividing the total rewards accrued during a trial by the maximum 
-possible total rewards possible during that run.  You can see convergence towards an optimal policy in this plot:
+possible total rewards possible during that trial.  You can see convergence towards an optimal policy in this plot:
 
 ![learning growth](learning_growth.png "Learning growth")
 
-There is some fluctuation from trial to trial, but you can see that our policy converged to a value that was about 0.9 the value of the optimal policy.
+There is some fluctuation from trial to trial, but you can see that our policy converged to a value that was about 0.8 the value of the optimal policy.
