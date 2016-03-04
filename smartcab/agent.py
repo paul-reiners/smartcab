@@ -13,16 +13,16 @@ class LearningAgent(Agent):
         self.planner = RoutePlanner(self.env, self)  # simple route planner to get next_waypoint
         # TODO: Initialize any additional variables here
         self.q = {}
-        valid_actions = Environment.valid_actions + [None]
+        self.valid_actions = Environment.valid_actions + [None]
         self.gamma = gamma
-        for left in valid_actions:
-            for right in valid_actions:
-                for oncoming in valid_actions:
+        for left in self.valid_actions:
+            for right in self.valid_actions:
+                for oncoming in self.valid_actions:
                     for light in ['green', 'red']:
                         for next_waypoint in Environment.valid_actions[1:]:
                             state = (left, right, oncoming, light, next_waypoint)
                             self.q[state] = {}
-                            for action in valid_actions:
+                            for action in self.valid_actions:
                                 self.q[state][action] = 0.0
         self.t = 1    
         self.initialize()
@@ -46,7 +46,7 @@ class LearningAgent(Agent):
         self.state = (inputs['left'], inputs['right'], inputs['oncoming'], inputs['light'], self.next_waypoint)
 
         # TODO: Select action according to your policy
-        best_action = self.greedy_policy(self.state)
+        best_action = self.epsilon_greedy_exploration(self.state, 0.02)
 
         # Execute action and get reward
         reward = self.env.act(self, best_action)
@@ -77,6 +77,13 @@ class LearningAgent(Agent):
                 best_q = self.q[state][action]
         
         return best_action
+    
+    
+    def epsilon_greedy_exploration(self, state, epsilon):
+        if random.random() < epsilon:
+            return random.choice(self.valid_actions)
+        else:
+            return self.greedy_policy(state)
     
     
     def get_utility_of_next_state(self, s_prime):
