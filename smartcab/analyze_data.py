@@ -8,6 +8,8 @@ Created on Mar 3, 2016
 
 import sys
 import re
+import matplotlib.pyplot as plt
+
 
 def analyze_data(input_file_name, output_file_name):
     successes = 0
@@ -27,6 +29,7 @@ def analyze_data(input_file_name, output_file_name):
             if 'Simulator.run()' in line:
                 trial_start_lines.append(i)
         trial = 0
+        performance_over_time = []
         for trial_start_line in trial_start_lines:
             done = False
             current_line_num = trial_start_line
@@ -61,6 +64,7 @@ def analyze_data(input_file_name, output_file_name):
                     num_steps = deadline - last_step_deadline + 1
                     max_possible_reward = 2 * num_steps + 10
                     performance = total_reward / max_possible_reward
+                    performance_over_time.append(performance)
                     columns = \
                         [str(trial), succeeded_str, str(deadline), \
                          str(last_step_deadline), str(num_steps), \
@@ -78,6 +82,9 @@ def analyze_data(input_file_name, output_file_name):
     print "successes:", successes
     print "failures: ", failures
     output_file.close()
+    plt.plot(performance_over_time)
+    plt.ylabel('performance')
+    plt.show()
   
     
 def get_int_from_line(name, line):
