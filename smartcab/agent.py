@@ -7,7 +7,7 @@ import sys
 class LearningAgent(Agent):
     """An agent that learns to drive in the smartcab world."""
 
-    def __init__(self, env, gamma, alpha):
+    def __init__(self, env, gamma):
         super(LearningAgent, self).__init__(env)  # sets self.env = env, state = None, next_waypoint = None, and a default color
         self.color = 'red'  # override color
         self.planner = RoutePlanner(self.env, self)  # simple route planner to get next_waypoint
@@ -15,7 +15,6 @@ class LearningAgent(Agent):
         self.q = {}
         valid_actions = Environment.valid_actions + [None]
         self.gamma = gamma
-        self.alpha = alpha
         for left in valid_actions:
             for right in valid_actions:
                 for oncoming in valid_actions:
@@ -66,7 +65,8 @@ class LearningAgent(Agent):
         s_prime = (inputs['left'], inputs['right'], inputs['oncoming'], inputs['light'], next_waypoint)
         utility_of_next_state = self.get_utility_of_next_state(s_prime)
         utility_of_state = r + self.gamma * utility_of_next_state
-        self.q[s][a] = modify_by_alpha(self.alpha / self.t, self.q[s][a], utility_of_state)
+        alpha = get_alpha(self.t)
+        self.q[s][a] = modify_by_alpha(alpha, self.q[s][a], utility_of_state)
         self.t += 1
         
         self.total_reward += reward
@@ -83,15 +83,20 @@ class LearningAgent(Agent):
         return utility_of_next_state
 
 
+def get_alpha(t):
+    return 1.0 / float(t)
+
+
 def modify_by_alpha(alpha, v, x):
     return (1 - alpha) * v + alpha * x
 
-def run(gamma, alpha):
+
+def run(gamma):
     """Run the agent for a finite number of trials."""
 
     # Set up environment and agent
     e = Environment()  # create environment (also adds some dummy traffic)
-    a = e.create_agent(LearningAgent, gamma=gamma, alpha=alpha)  # create agent
+    a = e.create_agent(LearningAgent, gamma=gamma)  # create agent
     e.set_primary_agent(a, enforce_deadline=True)  # set agent to track
 
     # Now simulate it
@@ -101,5 +106,4 @@ def run(gamma, alpha):
 
 if __name__ == '__main__':
     gamma = float(sys.argv[1])
-    alpha = float(sys.argv[2])
-    run(gamma=gamma, alpha=alpha)
+    run(gamma=gamma)
