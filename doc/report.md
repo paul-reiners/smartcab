@@ -93,8 +93,29 @@ As we can see, the agent reached the primary destination 6 out of 10 times.  Mor
 
 *Report what changes you made to your basic implementation of Q-Learning to achieve the final version of the agent. How well does it perform?*
 
-To achieve the final version of the agent, I experimented with different values of gamma and alpha.  I recorded
-the results in this [spreadsheet](../data/performance.csv).  I considered a trial to have succeeded if it reached
+I considered a trial to have succeeded if it reached
 the destination and the cumulative reward was non-negative.
 
-With gamma set to 0.950 and alpha set to 0.20, I achieved a success rate of 46%.
+It took a lot of work on my implementation before I achieved good results.  Without really thinking much about it,
+I first used a greedy policy for choosing the next action.  I fiddled around with the value of γ quite a lot, but could
+not do better than a success rate of about 40%.  After spending hours doing this, I finally went back and listened
+to the lectures again (always running experiments in the background).  That was not a bad idea.  Using the ideas in
+the lecture, I implemented an epsilon-greedy strategy.  Although I'm sure this probably improved things, it was not evident
+for 100 trials.  I next tried an epsilon-decreasing strategy.  Again, this did not seem to help (at least with 100 trials).
+
+Finally, I tried "optimism in the face of uncertainty" initialization of the Q table.  
+*This made all the difference in the world.*  I was now achieving success rates of 80% and higher.
+
+To achieve the final version of the agent, I experimented with different values of gamma.  I recorded
+the results in this [spreadsheet](../data/performance.csv).  
+
+With gamma set to 0.900, I achieved a success rate of 84%.
+
+*Does your agent get close to finding an optimal policy, i.e. reach the destination in the minimum possible time, and not incur any penalties?*
+
+I measured how close I was to finding an optimal policy by dividing the total rewards accrued during a trial by the maximum 
+possible total rewards possible during that run.  You can see convergence towards an optimal policy in this plot:
+
+![learning growth](learning_growth.png "Learning growth")
+
+There is some fluctuation from trial to trial, but you can see that our policy converged to a value that was about 0.9 the value of the optimal policy.
