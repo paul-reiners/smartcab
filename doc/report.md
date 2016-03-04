@@ -98,24 +98,25 @@ I considered a trial to have succeeded if it reached
 the destination and the cumulative reward was non-negative.
 
 It took a lot of work on my implementation before I achieved good results.  Without really thinking much about it,
-I first used a greedy policy for choosing the next action.  I fiddled around with the value of γ quite a lot, but could
-not do better than a success rate of about 40%.  After spending hours doing this, I finally went back and listened
-to the lectures again (always running experiments in the background).  That was not a bad idea.  Using the ideas in
-the lecture, I implemented an epsilon-greedy strategy.  Although I'm sure this probably improved things, it was not evident
+I first used a greedy policy for choosing the next action.  I fiddled around with the value of gamma quite a lot, but could
+not do better than a success rate of about 40% (I must have gotten lucky with that first run success
+rate of 60%). 
+
+(Incidentally, at this point I needed to create some automation to summarize my results.  With 100 trials,
+I could no longer count the success rate manually every time.  My automation is in 
+[analyze_data.py](../smartcab/analyze_data.py).  It simply parses the output, which I would redirect to a file,
+and then creates a [spreadsheet](../data/result.csv).)
+
+After spending many hours doing this, I finally went back and listened
+to the lectures again (always running experiments in the background).  Watching the lectures again was not a bad idea.  Using the ideas in the lecture, I implemented an epsilon-greedy strategy.  Although I'm sure this probably improved things, it was not evident
 for 100 trials.  I next tried an epsilon-decreasing strategy.  Again, this did not seem to help (at least with 100 trials).
 
-Finally, I tried "optimism in the face of uncertainty" initialization of the Q table.  
-*This made all the difference in the world.*  I was now achieving success rates of 80% and higher.
+Finally, I tried adding "optimism in the face of uncertainty" initialization of the Q table.  This made all the difference in the world.  I was now achieving success rates of 80% and higher.
 
 To achieve the final version of the agent, I experimented with different values of gamma.  I recorded
 the results in this [spreadsheet](../data/performance.csv).  
 
-With gamma set to 0.900, I achieved a success rate of 84%.
-
-Incidentally, at this point I needed to create some automation to summarize my results.  With 100 trials,
-I could no longer count the success rate manually all the time.  My automation is in 
-[analyze_data.py](../smartcab/analyze_data.py).  It simply parses the output, which I would redirect to a file,
-and then creates a [spreadsheet](../data/result.csv).
+With gamma set to 0.900, I achieved a success rate of 97%.
 
 *Does your agent get close to finding an optimal policy, i.e. reach the destination in the minimum possible time, and not incur any penalties?*
 
