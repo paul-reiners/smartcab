@@ -14,7 +14,8 @@ def analyze_data(input_file_name, output_file_name):
     failures = 0
     output_file = open(output_file_name,'w')
     columns = \
-        ['trial', 'succeeded', 'deadline', 'last_step_deadline', 'num_steps']
+        ['trial', 'succeeded', 'deadline', 'last_step_deadline', 'num_steps', \
+         'total_reward']
     for column in columns:
         output_file.write(column + ',')
     output_file.write('\n') 
@@ -37,6 +38,8 @@ def analyze_data(input_file_name, output_file_name):
                 succeeded = None
                 if 'Primary agent could not reach destination within deadline!' in line:
                     succeeded = False
+                    prev_line = lines[current_line_num - 1]
+                    total_reward = get_float_from_line("total_reward", prev_line)
                 elif 'Primary agent has reached destination!' in line:
                     next_line = lines[current_line_num + 1]
                     total_reward = get_float_from_line("total_reward", next_line)
@@ -58,7 +61,8 @@ def analyze_data(input_file_name, output_file_name):
                     num_steps = deadline - last_step_deadline + 1
                     columns = \
                         [str(trial), succeeded_str, str(deadline), \
-                         str(last_step_deadline), str(num_steps)]
+                         str(last_step_deadline), str(num_steps), \
+                         str(total_reward)]
                     output_line = ''
                     for column in columns:
                         output_line += column + ','
