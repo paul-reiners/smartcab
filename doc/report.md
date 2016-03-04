@@ -104,8 +104,8 @@ rate of 60%).
 
 (Incidentally, at this point I needed to create some automation to summarize my results.  With 100 trials,
 I could no longer count the success rate manually every time.  My automation is in 
-[analyze_data.py](../smartcab/analyze_data.py).  It simply parses the output, which I would redirect to a file,
-and then creates a [spreadsheet](../data/result.csv).)
+[analyze_data.py](https://github.com/paul-reiners/smartcab/blob/master/smartcab/analyze_data.py).  It simply parses the output, which I would redirect to a file,
+and then creates a [spreadsheet](https://github.com/paul-reiners/smartcab/blob/master/data/result.csv).)
 
 After spending many hours doing this, I finally went back and listened
 to the lectures again (always running experiments in the background).  Watching the lectures again was not a bad idea.  Using the ideas in the lecture, I implemented an epsilon-greedy strategy.  Although I'm sure this probably improved things, it was not evident
@@ -114,7 +114,7 @@ for 100 trials.  I next tried an epsilon-decreasing strategy.  Again, this did n
 Finally, I tried adding "optimism in the face of uncertainty" initialization of the Q table.  This made all the difference in the world.  I was now achieving success rates of 80% and higher.
 
 To achieve the final version of the agent, I experimented with different values of gamma.  I recorded
-the results in this [spreadsheet](../data/performance.csv).  
+the results in this [spreadsheet](https://github.com/paul-reiners/smartcab/blob/master/data/performance.csv).  
 
 With gamma set to 0.900, I achieved a success rate of 97%.
 
