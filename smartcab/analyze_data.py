@@ -13,7 +13,7 @@ def analyze_data(input_file_name, output_file_name):
     successes = 0
     failures = 0
     output_file = open(output_file_name,'w')
-    output_file.write('succeeded\n') 
+    output_file.write('trial,succeeded\n') 
     with open(input_file_name) as input_file:
         lines = input_file.readlines()
         trial_start_lines = []
@@ -21,6 +21,7 @@ def analyze_data(input_file_name, output_file_name):
             line = lines[i]
             if 'Simulator.run()' in line:
                 trial_start_lines.append(i)
+        trial = 0
         for trial_start_line in trial_start_lines:
             done = False
             current_line_num = trial_start_line
@@ -39,11 +40,13 @@ def analyze_data(input_file_name, output_file_name):
                 if not succeeded is None:
                     if succeeded:
                         successes += 1
-                        output_file.write('1\n') 
+                        succeeded_str = '1' 
                     else:
                         failures += 1
-                        output_file.write('0\n') 
+                        succeeded_str = '0' 
+                    output_file.write(str(trial) + ',' + succeeded_str + '\n')
                     done = True
+                    trial += 1
                 else:
                     current_line_num += 1
     print "successes:", successes
@@ -51,14 +54,27 @@ def analyze_data(input_file_name, output_file_name):
     output_file.close()
   
     
+def get_int_from_line(name, line):
+    val_str = get_num_str_from_line(name, line)
+    val = int(val_str)
+    
+    return val
+  
+    
 def get_float_from_line(name, line):
-    reg_ex = name + " = (\d+\.\d+)"
-    m = re.search(reg_ex, line)
-    val_str = m.group(1)
+    val_str = get_num_str_from_line(name, line)
     val = float(val_str)
     
     return val
-     
+
+
+def get_num_str_from_line(name, line):
+    reg_ex = name + " = (\d+\.\d+)"
+    m = re.search(reg_ex, line)
+    val_str = m.group(1)
+
+    return val_str
+        
         
 if __name__ == '__main__':
     input_file_name = sys.argv[1]
