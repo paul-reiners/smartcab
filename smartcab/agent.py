@@ -46,12 +46,7 @@ class LearningAgent(Agent):
         self.state = (inputs['left'], inputs['right'], inputs['oncoming'], inputs['light'], self.next_waypoint)
 
         # TODO: Select action according to your policy
-        best_action = None
-        best_q = None
-        for action in self.q[self.state]:
-            if best_q is None or self.q[self.state][action] > best_q:
-                best_action = action
-                best_q = self.q[self.state][action]
+        best_action = self.greedy_policy(self.state)
 
         # Execute action and get reward
         reward = self.env.act(self, best_action)
@@ -73,6 +68,17 @@ class LearningAgent(Agent):
         print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}, total_reward = {}".format(deadline, inputs, best_action, reward, self.total_reward)  # [debug]
 
 
+    def greedy_policy(self, state):
+        best_action = None
+        best_q = None
+        for action in self.q[state]:
+            if best_q is None or self.q[state][action] > best_q:
+                best_action = action
+                best_q = self.q[state][action]
+        
+        return best_action
+    
+    
     def get_utility_of_next_state(self, s_prime):
         best_utility_of_next_state = None
         for a_prime in self.q[s_prime]:
