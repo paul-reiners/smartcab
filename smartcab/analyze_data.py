@@ -15,7 +15,7 @@ def analyze_data(input_file_name, output_file_name):
     output_file = open(output_file_name,'w')
     columns = \
         ['trial', 'succeeded', 'deadline', 'last_step_deadline', 'num_steps', \
-         'total_reward', 'max_possible_reward']
+         'total_reward', 'max_possible_reward', 'performance']
     for column in columns:
         output_file.write(column + ',')
     output_file.write('\n') 
@@ -60,10 +60,12 @@ def analyze_data(input_file_name, output_file_name):
                         last_step_deadline = 0
                     num_steps = deadline - last_step_deadline + 1
                     max_possible_reward = 2 * num_steps + 10
+                    performance = total_reward / max_possible_reward
                     columns = \
                         [str(trial), succeeded_str, str(deadline), \
                          str(last_step_deadline), str(num_steps), \
-                         str(total_reward), str(max_possible_reward)]
+                         str(total_reward), str(max_possible_reward), 
+                         str(performance)]
                     output_line = ''
                     for column in columns:
                         output_line += column + ','
