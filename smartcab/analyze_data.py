@@ -31,10 +31,7 @@ def analyze_data(input_file_name, output_file_name):
                     succeeded = False
                 elif 'Primary agent has reached destination!' in line:
                     next_line = lines[current_line_num + 1]
-                    reg_ex = "total_reward = (\d+\.\d+)"
-                    m = re.search(reg_ex, next_line)
-                    total_reward_str = m.group(1)
-                    total_reward = float(total_reward_str)
+                    total_reward = get_float_from_line("total_reward", next_line)
                     if total_reward >= 0.0:
                         succeeded = True
                     else:
@@ -52,6 +49,16 @@ def analyze_data(input_file_name, output_file_name):
     print "successes:", successes
     print "failures: ", failures
     output_file.close()
+  
+    
+def get_float_from_line(name, line):
+    reg_ex = name + " = (\d+\.\d+)"
+    m = re.search(reg_ex, line)
+    val_str = m.group(1)
+    val = float(val_str)
+    
+    return val
+     
         
 if __name__ == '__main__':
     input_file_name = sys.argv[1]
