@@ -13,7 +13,7 @@ def analyze_data(input_file_name, output_file_name):
     successes = 0
     failures = 0
     output_file = open(output_file_name,'w')
-    output_file.write('trial,succeeded\n') 
+    output_file.write('trial,succeeded,deadline\n') 
     with open(input_file_name) as input_file:
         lines = input_file.readlines()
         trial_start_lines = []
@@ -25,6 +25,9 @@ def analyze_data(input_file_name, output_file_name):
         for trial_start_line in trial_start_lines:
             done = False
             current_line_num = trial_start_line
+            current_line_num += 1
+            line = lines[current_line_num]
+            deadline = get_int_from_line('deadline', line)
             while not done:
                 line = lines[current_line_num]
                 succeeded = None
@@ -44,7 +47,7 @@ def analyze_data(input_file_name, output_file_name):
                     else:
                         failures += 1
                         succeeded_str = '0' 
-                    output_file.write(str(trial) + ',' + succeeded_str + '\n')
+                    output_file.write(str(trial) + ',' + succeeded_str + ',' + str(deadline) + '\n')
                     done = True
                     trial += 1
                 else:
@@ -55,21 +58,21 @@ def analyze_data(input_file_name, output_file_name):
   
     
 def get_int_from_line(name, line):
-    val_str = get_num_str_from_line(name, line)
+    val_str = get_num_str_from_line(name, line, "\d+")
     val = int(val_str)
     
     return val
   
     
 def get_float_from_line(name, line):
-    val_str = get_num_str_from_line(name, line)
+    val_str = get_num_str_from_line(name, line, "\d+\.\d+")
     val = float(val_str)
     
     return val
 
 
-def get_num_str_from_line(name, line):
-    reg_ex = name + " = (\d+\.\d+)"
+def get_num_str_from_line(name, line, num_reg_ex):
+    reg_ex = name + " = (" + num_reg_ex + ")"
     m = re.search(reg_ex, line)
     val_str = m.group(1)
 
