@@ -40,55 +40,7 @@ At this point, I decided to start recording the exact results.  I now had the fo
 * discount (gamma): 0.9
 * step size (alpha): 0.2
 
-Here is the abridged output running with those settings:
-
-	Simulator.run(): Trial 0
-	Environment.reset(): Trial set up with start = (8, 3), destination = (2, 6), deadline = 45
-	Environment.reset(): Primary agent could not reach destination within deadline!
-
-	Simulator.run(): Trial 1
-	Environment.reset(): Trial set up with start = (5, 6), destination = (2, 3), deadline = 30
-	Environment.act(): Primary agent has reached destination!
-	LearningAgent.update(): deadline = 6, inputs = {'light': 'green', 'oncoming': None, 'right': None, 'left': None}, action = forward, reward = 12
-
-	Simulator.run(): Trial 2
-	Environment.reset(): Trial set up with start = (5, 5), destination = (2, 6), deadline = 20
-	Environment.act(): Primary agent has reached destination!
-	LearningAgent.update(): deadline = 7, inputs = {'light': 'green', 'oncoming': None, 'right': None, 'left': None}, action = forward, reward = 10.5
-
-	Simulator.run(): Trial 3
-	Environment.reset(): Trial set up with start = (7, 1), destination = (4, 4), deadline = 30
-	Environment.reset(): Primary agent could not reach destination within deadline!
-
-	Simulator.run(): Trial 4
-	Environment.reset(): Trial set up with start = (3, 4), destination = (5, 2), deadline = 20
-	Environment.reset(): Primary agent could not reach destination within deadline!
-
-	Simulator.run(): Trial 5
-	Environment.reset(): Trial set up with start = (7, 6), destination = (3, 4), deadline = 30
-	Environment.reset(): Primary agent could not reach destination within deadline!
-
-	Simulator.run(): Trial 6
-	Environment.reset(): Trial set up with start = (4, 1), destination = (4, 6), deadline = 25
-	Environment.act(): Primary agent has reached destination!
-	LearningAgent.update(): deadline = 21, inputs = {'light': 'green', 'oncoming': None, 'right': None, 'left': None}, action = forward, reward = 12
-
-	Simulator.run(): Trial 7
-	Environment.reset(): Trial set up with start = (6, 3), destination = (4, 5), deadline = 20
-	Environment.act(): Primary agent has reached destination!
-	LearningAgent.update(): deadline = 3, inputs = {'light': 'red', 'oncoming': None, 'right': None, 'left': None}, action = right, reward = 12
-
-	Simulator.run(): Trial 8
-	Environment.reset(): Trial set up with start = (6, 2), destination = (8, 6), deadline = 30
-	Environment.act(): Primary agent has reached destination!
-	LearningAgent.update(): deadline = 13, inputs = {'light': 'red', 'oncoming': None, 'right': None, 'left': None}, action = right, reward = 12
-
-	Simulator.run(): Trial 9
-	Environment.reset(): Trial set up with start = (8, 2), destination = (1, 3), deadline = 40
-	Environment.act(): Primary agent has reached destination!
-	LearningAgent.update(): deadline = 2, inputs = {'light': 'red', 'oncoming': None, 'right': None, 'left': None}, action = right, reward = 12
-
-As we can see, the agent reached the primary destination 6 out of 10 times.  Moreover, at least in the cases where the destination was reached, the reward was always positive.
+With these settings, the agent reached the primary destination 6 out of 10 times.  Moreover, at least in the cases where the destination was reached, the cumulative reward was always positive.
 
 ## Enhance the driving agent
 
@@ -121,7 +73,7 @@ With gamma set to 0.900, I achieved a success rate of 97%.
 *Does your agent get close to finding an optimal policy, i.e. reach the destination in the minimum possible time, and not incur any penalties?*
 
 I measured how close I was to finding an optimal policy by dividing the total rewards accrued during a trial by the maximum 
-possible total rewards possible during that trial.  You can see convergence towards an optimal policy in this plot:
+possible total rewards possible during that trial.  You can see convergence towards an optimal policy in the plot below.  
 
 ![learning growth](learning_growth.png "Learning growth")
 
