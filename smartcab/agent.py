@@ -50,17 +50,6 @@ class LearningAgent(Agent):
         # TODO: Update state
         self.state = (inputs['left'], inputs['right'], inputs['oncoming'], inputs['light'], self.next_waypoint)
 
-        if self.first_iteration:
-            self.first_iteration = False
-        else:
-            best_q = None
-            for a_prime in self.q[self.state]:
-                if best_q is None or self.q[self.state][a_prime] > best_q:
-                    best_q = self.q[self.state][a_prime]
-            self.q[self.prev_state][self.prev_action] = \
-                self.q[self.prev_state][self.prev_action] + \
-                self.alpha * (self.prev_reward + best_q - self.q[self.prev_state][self.prev_action])            
-                
         # TODO: Select action according to your policy
         best_action = None
         best_q = 0
@@ -73,12 +62,35 @@ class LearningAgent(Agent):
         reward = self.env.act(self, best_action)
 
         # TODO: Learn policy based on state, action, reward
+        s = self.state
+        a = best_action
+        r = reward
+        next_waypoint = self.planner.next_waypoint()  
+        inputs = self.env.sense(self)
+        s_prime = (inputs['left'], inputs['right'], inputs['oncoming'], inputs['light'], next_waypoint)
+        utility_of_next_state = self.get_utility_of_next_state(s_prime)
+        utility_of_state = r + self.gamma * utility_of_next_state
+        self.q[s][a] = modify_by_alpha(self.alpha, self.q[s][a], utility_of_state)
+        
         self.total_reward += reward
         print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}, total_reward = {}".format(deadline, inputs, best_action, reward, self.total_reward)  # [debug]
         self.prev_state = self.state
         self.prev_action = best_action
         self.prev_reward = reward
 
+
+    def get_utility_of_next_state(self, s_prime):
+        best_utility_of_next_state = None
+        for a_prime in self.q[s_prime]:
+            if best_utility_of_next_state is None or self.q[s_prime][a_prime] > best_utility_of_next_state:
+                best_utility_of_next_state = self.q[s_prime][a_prime]
+        utility_of_next_state = best_utility_of_next_state
+        
+        return utility_of_next_state
+
+
+def modify_by_alpha(alpha, v, x):
+    return (1 - alpha) * v + alpha * x
 
 def run(gamma, alpha):
     """Run the agent for a finite number of trials."""
@@ -89,8 +101,8 @@ def run(gamma, alpha):
     e.set_primary_agent(a, enforce_deadline=True)  # set agent to track
 
     # Now simulate it
-    sim = Simulator(e, update_delay=2)  # reduce update_delay to speed up simulation
-    sim.run(n_trials=10)  # press Esc or close pygame window to quit
+    sim = Simulator(e, update_delay=0.1)  # reduce update_delay to speed up simulation
+    sim.run(n_trials=100)  # press Esc or close pygame window to quit
 
 
 if __name__ == '__main__':

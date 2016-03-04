@@ -44,8 +44,9 @@ def analyze_data(input_file_name, output_file_name):
                     prev_line = lines[current_line_num - 1]
                     total_reward = get_float_from_line("total_reward", prev_line)
                 elif 'Primary agent has reached destination!' in line:
-                    next_line = lines[current_line_num + 1]
-                    total_reward = get_float_from_line("total_reward", next_line)
+                    prev_line = lines[current_line_num - 1]
+                    total_reward = get_float_from_line("total_reward", prev_line)
+                    total_reward += 10
                     if total_reward >= 0.0:
                         succeeded = True
                     else:
@@ -54,9 +55,8 @@ def analyze_data(input_file_name, output_file_name):
                     if succeeded:
                         successes += 1
                         succeeded_str = '1' 
-                        current_line_num += 1
-                        line = lines[current_line_num]
-                        last_step_deadline = get_int_from_line('deadline', line)
+                        prev_line = lines[current_line_num - 1]
+                        last_step_deadline = get_int_from_line('deadline', prev_line)
                     else:
                         failures += 1
                         succeeded_str = '0' 
@@ -95,7 +95,7 @@ def get_int_from_line(name, line):
   
     
 def get_float_from_line(name, line):
-    val_str = get_num_str_from_line(name, line, "\d+\.\d+")
+    val_str = get_num_str_from_line(name, line, "[0-9]*\.?[0-9]+")
     val = float(val_str)
     
     return val

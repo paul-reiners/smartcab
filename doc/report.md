@@ -26,7 +26,7 @@ These four states seem like a good start.  I might add later the agent's current
 ## Implement Q-Learning
 
 Using 
-[Artificial Intelligence - foundations of computational agents -- 11.3.3 Q-learning](http://artint.info/html/ArtInt_265.html) by David Poole and Alan Mackworth as a reference, I implemented Q-learning.  At this point, I also added
+the Udacity Reinforcement Learning lectures as a reference, I implemented Q-learning.  At this point, I also added
 one more item to the agent's state:
 
 * next_waypoint
