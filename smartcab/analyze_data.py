@@ -7,6 +7,7 @@ Created on Mar 3, 2016
 '''
 
 import sys
+import re
 
 def analyze_data(file_name):
     successes = 0
@@ -19,9 +20,11 @@ def analyze_data(file_name):
                 failures += 1
             elif 'Primary agent has reached destination!' in line:
                 next_line = lines[i + 1]
-                parts = next_line.split();
-                reward = float(parts[len(parts) - 1])
-                if reward >= 0.0:
+                reg_ex = "total_reward = (\d+\.\d+)"
+                m = re.search(reg_ex, next_line)
+                total_reward_str = m.group(1)
+                total_reward = float(total_reward_str)
+                if total_reward >= 0.0:
                     successes += 1
                 else:
                     failures += 1
