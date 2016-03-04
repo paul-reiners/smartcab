@@ -90,3 +90,11 @@ Here is the abridged output running with those settings:
 As we can see, the agent reached the primary destination 6 out of 10 times.  Moreover, at least in the cases where the destination was reached, the reward was always positive.
 
 ## Enhance the driving agent
+
+*Report what changes you made to your basic implementation of Q-Learning to achieve the final version of the agent. How well does it perform?*
+
+To achieve the final version of the agent, I experimented with different values of gamma and alpha.  I recorded
+the results in this [spreadsheet](../data/performance.csv).  I considered a trial to have succeeded if it reached
+the destination and the cumulative reward was non-negative.
+
+With gamma set to 0.950 and alpha set to 0.20, I achieved a success rate of 46%.
