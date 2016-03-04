@@ -23,8 +23,10 @@ class LearningAgent(Agent):
                             state = (left, right, oncoming, light, next_waypoint)
                             self.q[state] = {}
                             for action in self.valid_actions:
-                                self.q[state][action] = 0.0
-        self.t = 1    
+                                # optimism in the face of uncertainty
+                                self.q[state][action] = 10.0
+        self.t = 1 
+        self.epsilon = 0.5   
         self.initialize()
         
     def initialize(self):
@@ -46,7 +48,9 @@ class LearningAgent(Agent):
         self.state = (inputs['left'], inputs['right'], inputs['oncoming'], inputs['light'], self.next_waypoint)
 
         # TODO: Select action according to your policy
-        best_action = self.epsilon_greedy_exploration(self.state, 0.02)
+        best_action = self.epsilon_greedy_exploration(self.state, self.epsilon)
+        # GLIE (decayed epsilon)
+        self.epsilon *= 0.99
 
         # Execute action and get reward
         reward = self.env.act(self, best_action)
