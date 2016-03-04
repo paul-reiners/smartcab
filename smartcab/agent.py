@@ -52,9 +52,9 @@ class LearningAgent(Agent):
 
         # TODO: Select action according to your policy
         best_action = None
-        best_q = 0
+        best_q = None
         for action in self.q[self.state]:
-            if best_action is None or self.q[self.state][action] > best_q:
+            if best_q is None or self.q[self.state][action] > best_q:
                 best_action = action
                 best_q = self.q[self.state][action]
 

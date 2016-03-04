@@ -45,7 +45,10 @@ def analyze_data(input_file_name, output_file_name):
                     total_reward = get_float_from_line("total_reward", prev_line)
                 elif 'Primary agent has reached destination!' in line:
                     prev_line = lines[current_line_num - 1]
-                    total_reward = get_float_from_line("total_reward", prev_line)
+                    if 'RoutePlanner.route_to()' in prev_line:
+                        total_reward = 0
+                    else:
+                        total_reward = get_float_from_line("total_reward", prev_line)
                     total_reward += 10
                     if total_reward >= 0.0:
                         succeeded = True
@@ -56,7 +59,10 @@ def analyze_data(input_file_name, output_file_name):
                         successes += 1
                         succeeded_str = '1' 
                         prev_line = lines[current_line_num - 1]
-                        last_step_deadline = get_int_from_line('deadline', prev_line)
+                        if 'RoutePlanner.route_to()' in prev_line:
+                            last_step_deadline = deadline
+                        else:
+                            last_step_deadline = get_int_from_line('deadline', prev_line)
                     else:
                         failures += 1
                         succeeded_str = '0' 
