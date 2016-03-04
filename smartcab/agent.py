@@ -34,6 +34,7 @@ class LearningAgent(Agent):
         self.prev_action = None
         self.prev_reward = None
         self.first_iteration = True
+        self.total_reward = 0
 
     def reset(self, destination=None):
         self.planner.route_to(destination)
@@ -72,8 +73,8 @@ class LearningAgent(Agent):
         reward = self.env.act(self, best_action)
 
         # TODO: Learn policy based on state, action, reward
-
-        print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, best_action, reward)  # [debug]
+        self.total_reward += reward
+        print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}, total_reward = {}".format(deadline, inputs, best_action, reward, self.total_reward)  # [debug]
         self.prev_state = self.state
         self.prev_action = best_action
         self.prev_reward = reward
@@ -88,7 +89,7 @@ def run(gamma, alpha):
     e.set_primary_agent(a, enforce_deadline=True)  # set agent to track
 
     # Now simulate it
-    sim = Simulator(e, update_delay=0.1)  # reduce update_delay to speed up simulation
+    sim = Simulator(e, update_delay=0.01)  # reduce update_delay to speed up simulation
     sim.run(n_trials=100)  # press Esc or close pygame window to quit
 
 
