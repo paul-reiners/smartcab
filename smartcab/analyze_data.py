@@ -13,7 +13,8 @@ def analyze_data(input_file_name, output_file_name):
     successes = 0
     failures = 0
     output_file = open(output_file_name,'w')
-    columns = ['trial', 'succeeded', 'deadline', 'last_step_deadline']
+    columns = \
+        ['trial', 'succeeded', 'deadline', 'last_step_deadline', 'num_steps']
     for column in columns:
         output_file.write(column + ',')
     output_file.write('\n') 
@@ -54,7 +55,10 @@ def analyze_data(input_file_name, output_file_name):
                         failures += 1
                         succeeded_str = '0' 
                         last_step_deadline = 0
-                    columns = [str(trial), succeeded_str, str(deadline), str(last_step_deadline)]
+                    num_steps = deadline - last_step_deadline + 1
+                    columns = \
+                        [str(trial), succeeded_str, str(deadline), \
+                         str(last_step_deadline), str(num_steps)]
                     output_line = ''
                     for column in columns:
                         output_line += column + ','
