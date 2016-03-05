@@ -11,7 +11,7 @@ class LearningAgent(Agent):
         super(LearningAgent, self).__init__(env)  # sets self.env = env, state = None, next_waypoint = None, and a default color
         self.color = 'red'  # override color
         self.planner = RoutePlanner(self.env, self)  # simple route planner to get next_waypoint
-        # TODO: Initialize any additional variables here
+        # Initialize any additional variables here
         self.q = {}
         self.valid_actions = Environment.valid_actions + [None]
         self.gamma = gamma
@@ -35,7 +35,7 @@ class LearningAgent(Agent):
 
     def reset(self, destination=None):
         self.planner.route_to(destination)
-        # TODO: Prepare for a new trip; reset any variables here, if required
+        # Prepare for a new trip; reset any variables here, if required
         self.initialize()
 
     def update(self, t):
@@ -44,10 +44,10 @@ class LearningAgent(Agent):
         inputs = self.env.sense(self)
         deadline = self.env.get_deadline(self)
 
-        # TODO: Update state
+        # Update state
         self.state = (inputs['left'], inputs['right'], inputs['oncoming'], inputs['light'], self.next_waypoint)
 
-        # TODO: Select action according to your policy
+        # Select action according to your policy
         best_action = self.epsilon_greedy_exploration(self.state, self.epsilon)
         # GLIE (decayed epsilon)
         self.epsilon *= 0.99
@@ -55,7 +55,7 @@ class LearningAgent(Agent):
         # Execute action and get reward
         reward = self.env.act(self, best_action)
 
-        # TODO: Learn policy based on state, action, reward
+        # Learn policy based on state, action, reward
         s = self.state
         a = best_action
         r = reward
