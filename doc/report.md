@@ -14,25 +14,30 @@ I never saw it do so.
 
 *Justify why you picked these set of states, and how they model the agent and its environment.*
 
-I first picked the following states:
+I picked the following states:
 
 * left
 * right
 * oncoming
 * light
+* next_waypoint
 
-These four states seemed like a good start as they give enough information that the smart cab
-can go through intersections without breaking any traffic laws.  
+The first four states seemed like a good start as they give enough information that the smart cab
+can go through intersections without breaking any traffic laws.  Of course, the cab must know whether 
+it has a green or red light.  If the light is green, the cab can freely go straight through the intersection
+or make a right turn.  However, if it wants to make a left turn on green, it needs to know the state of any on-coming
+cars.  If the light is red, the cab can make a right turn, if it will not interfere with cars on the left, on the right,
+and on-coming cars.  Thus, we need each of these four states for the cab to learn to obey all traffic laws.
+
+Adding the next_waypoint state allows the smart cab to make progress towards the destination.  
 
 ## Implement Q-Learning
 
 Using 
-the Udacity Reinforcement Learning lectures as a reference, I implemented Q-learning.  At this point, I also added
-one more item to the agent's state:
+the Udacity Reinforcement Learning lectures as a reference, I implemented Q-learning.  
 
-* next_waypoint
 
-Adding this state allows the smart cab to make progress towards the goal.  My agent seemed a bit more purposeful at this point.  It did reach the goal several times (with `enforce_deadline` still set to `False`) as I watched it.
+My agent seemed a bit more purposeful at this point.  It did reach the goal several times (with `enforce_deadline` still set to `False`) as I watched it.
 
 At this point, I decided to start recording the exact results.  I now had the following settings:
 
