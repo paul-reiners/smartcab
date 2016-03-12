@@ -63,11 +63,16 @@ class LearningAgent(Agent):
         r = reward
         next_waypoint = self.planner.next_waypoint()  
         inputs = self.env.sense(self)
+        
+        # Calculate next state, s'
         s_prime = (inputs['left'], inputs['right'], inputs['oncoming'], inputs['light'], next_waypoint)
         utility_of_next_state = self.get_utility_of_next_state(s_prime)
         utility_of_state = r + self.gamma * utility_of_next_state
+        # Learning rate decays over time
         learning_rate = get_learning_rate(self.t)
+        # Adjust Q table
         self.q[s][a] = modify_by_learning_rate(learning_rate, self.q[s][a], utility_of_state)
+        
         self.t += 1
         
         self.total_reward += reward
@@ -119,7 +124,7 @@ def run(gamma):
     e.set_primary_agent(a, enforce_deadline=True)  # set agent to track
 
     # Now simulate it
-    sim = Simulator(e, update_delay=1.0)  # reduce update_delay to speed up simulation
+    sim = Simulator(e, update_delay=0.1)  # reduce update_delay to speed up simulation
     sim.run(n_trials=10)  # press Esc or close pygame window to quit
 
 
