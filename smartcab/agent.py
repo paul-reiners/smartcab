@@ -2,7 +2,6 @@ import random
 from environment import Agent, Environment
 from planner import RoutePlanner
 from simulator import Simulator
-import sys
 
 class LearningAgent(Agent):
     """An agent that learns to drive in the smartcab world."""
@@ -67,8 +66,8 @@ class LearningAgent(Agent):
         s_prime = (inputs['left'], inputs['right'], inputs['oncoming'], inputs['light'], next_waypoint)
         utility_of_next_state = self.get_utility_of_next_state(s_prime)
         utility_of_state = r + self.gamma * utility_of_next_state
-        alpha = get_alpha(self.t)
-        self.q[s][a] = modify_by_alpha(alpha, self.q[s][a], utility_of_state)
+        learning_rate = get_learning_rate(self.t)
+        self.q[s][a] = modify_by_learning_rate(learning_rate, self.q[s][a], utility_of_state)
         self.t += 1
         
         self.total_reward += reward
@@ -103,12 +102,12 @@ class LearningAgent(Agent):
         return utility_of_next_state
 
 
-def get_alpha(t):
+def get_learning_rate(t):
     return 1.0 / float(t)
 
 
-def modify_by_alpha(alpha, v, x):
-    return (1 - alpha) * v + alpha * x
+def modify_by_learning_rate(learning_rate, v, x):
+    return (1 - learning_rate) * v + learning_rate * x
 
 
 def run(gamma):
@@ -120,8 +119,8 @@ def run(gamma):
     e.set_primary_agent(a, enforce_deadline=True)  # set agent to track
 
     # Now simulate it
-    sim = Simulator(e, update_delay=0.01)  # reduce update_delay to speed up simulation
-    sim.run(n_trials=100)  # press Esc or close pygame window to quit
+    sim = Simulator(e, update_delay=1.0)  # reduce update_delay to speed up simulation
+    sim.run(n_trials=10)  # press Esc or close pygame window to quit
 
 
 if __name__ == '__main__':
