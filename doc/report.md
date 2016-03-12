@@ -126,9 +126,6 @@ With gamma set to 0.900, I achieved a success rate of 97%.
 
 *Does your agent get close to finding an optimal policy, i.e. reach the destination in the minimum possible time, and not incur any penalties?*
 
-I measured how close I was to finding an optimal policy by dividing the total rewards accrued during a trial by the maximum 
-possible total rewards possible during that trial.  You can see convergence towards an optimal policy in the plot below.  
-
-![learning growth](learning_growth.png "Learning growth")
-
-There is some fluctuation from trial to trial, but you can see that our policy converged to a value that was about 0.8 the value of the optimal policy.
+It's hard to calculate the optimal policy.  A move that seems optimal at the time might cause unforeseeable delays later depending on
+the unpredictable behavior of other cars.  Nevertheless, since you can't predict the behavior of other agents, you can reasonably define the optimal policy to be to always go to the next way-point, while, when necessary, waiting for lights and traffic so as to not incur
+any penalties.  As we saw earlier, our cab has learned the first type of optimal policy after 85 trials.
