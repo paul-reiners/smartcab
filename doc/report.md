@@ -128,4 +128,4 @@ With gamma set to 0.900, I achieved a success rate of 97%.
 
 It's hard to calculate the optimal policy.  A move that seems optimal at the time might cause unforeseeable delays later depending on
 the unpredictable behavior of other cars.  Nevertheless, since you can't predict the behavior of other agents, you can reasonably define the optimal policy to be to always go to the next way-point, while, when necessary, waiting for lights and traffic so as to not incur
-any penalties.  As we saw earlier, our cab has learned the first type of optimal policy after 85 trials.
+any penalties.  As we saw earlier, our cab has learned this type of optimal policy after 85 trials.
