@@ -68,7 +68,47 @@ After spending many hours doing this, I finally went back and listened
 to the lectures again (always running experiments in the background).  Watching the lectures again was not a bad idea.  Using the ideas in the lecture, I implemented an epsilon-greedy strategy.  Although I'm sure this probably improved things, it was not evident
 for 100 trials.  I next tried an epsilon-decreasing strategy.  Again, this did not seem to help (at least with 100 trials).
 
-Finally, I tried adding "optimism in the face of uncertainty" initialization of the Q table.  This made all the difference in the world.  I was now achieving success rates of 80% and higher.
+Finally, I tried adding ["optimism in the face of uncertainty"](https://youtu.be/ws5BOy6L_V0?t=1m37s) initialization of the Q table.  From
+the class lecture:
+
+> [O]ne way to
+> achieve this exploration-exploitation balance, was to
+> randomly choose actions. So to change
+> the [way] we're doing action selection. But there's another one too, which is that
+> we can actually by manipulating the initialization of the Q function. We can
+> actually get another kind of exploration, can you see how that might work?
+>
+> Oh, I know what you do. If you could, if
+> you set, say the Q values to all be the highest
+> possible value they could be.
+>
+> Great, so if we initialized the Q hat to awesome values, then what the
+> Q learning algorithm would do, even with
+> greedy exploration, what it will do is it
+> will try things that it hasn't tried very much, and it still thinks are awesome.
+> And little by little, it gets a more
+> realistic sense of how the environment works.
+> 
+> So it's very optimistic?
+>
+> That's right, exactly and it's referred to often as "optimism in the face of uncertainty" 
+> and it's a similar kind of idea that's
+> used in algorithms like, A*, if you're familiar with search algorithms in AI.
+>
+> Oh yes, I remember those.
+> 
+> But this is, this is a really powerful idea and it's
+> used in, in reinforcement learning and
+banded algorithms and planning and search.
+>
+> Okay, and that makes sense because if
+> everything is awesome. Then your true key value
+> can only go down if awesome is bigger
+> than the biggest Q value you could ever have.
+
+Now, I didn't initialize with the biggest Q value you could have, but I picked 10.0 because
+that is the large reward the cab gets upon reaching the goal.  Moreover, it increased the 
+success rate from about 40% to above 80%.
 
 To achieve the final version of the agent, I experimented with different values of gamma.  I recorded
 the results in this [spreadsheet](https://github.com/paul-reiners/smartcab/blob/master/data/performance.csv).  

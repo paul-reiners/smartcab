@@ -6,6 +6,8 @@ import sys
 
 class LearningAgent(Agent):
     """An agent that learns to drive in the smartcab world."""
+    
+    AWESOME = 10.0
 
     def __init__(self, env, gamma):
         super(LearningAgent, self).__init__(env)  # sets self.env = env, state = None, next_waypoint = None, and a default color
@@ -24,7 +26,8 @@ class LearningAgent(Agent):
                             self.q[state] = {}
                             for action in self.valid_actions:
                                 # optimism in the face of uncertainty
-                                self.q[state][action] = 10.0
+                                # See https://youtu.be/ws5BOy6L_V0?t=1m37s
+                                self.q[state][action] = self.AWESOME
         self.t = 1 
         self.epsilon = 0.5   
         self.initialize()
@@ -117,8 +120,8 @@ def run(gamma):
     e.set_primary_agent(a, enforce_deadline=True)  # set agent to track
 
     # Now simulate it
-    sim = Simulator(e, update_delay=1.0)  # reduce update_delay to speed up simulation
-    sim.run(n_trials=10)  # press Esc or close pygame window to quit
+    sim = Simulator(e, update_delay=0.01)  # reduce update_delay to speed up simulation
+    sim.run(n_trials=100)  # press Esc or close pygame window to quit
 
 
 if __name__ == '__main__':

@@ -10,7 +10,6 @@ import sys
 import re
 import matplotlib.pyplot as plt
 
-
 def analyze_data(input_file_name, output_file_name):
     successes = 0
     failures = 0
