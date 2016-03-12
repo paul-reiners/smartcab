@@ -47,6 +47,15 @@ At this point, I decided to start recording the exact results.  I now had the fo
 
 With these settings, the agent reached the primary destination 6 out of 10 times.  Moreover, at least in the cases where the destination was reached, the cumulative reward was always positive.
 
+By looking at the plot below, we can see the changes in behavior as the smart cab learned.
+
+![rewards versus trials](rewards_versus_trials.png "Rewards versus trials")
+
+After the 80th trial, the cab stopped getting negative rewards.  In other words, it stopped making illegal
+moves.  And after about the 85th trial, it received rewards of only 1 or 2 and no rewards of 0.5 (or -1).  In other words,
+it always moved when legal, and, when it did move, it moved to the next way-point.  So it was driving optimally after
+the 85th trial.
+
 ## Enhance the driving agent
 
 *Report what changes you made to your basic implementation of Q-Learning to achieve the final version of the agent. How well does it perform?*
